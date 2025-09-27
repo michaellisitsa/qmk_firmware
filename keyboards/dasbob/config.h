@@ -53,7 +53,18 @@
 
 // Pick good defaults for enabling homerow modifiers
 #define TAPPING_TERM 200
+// Equivalent of zmk balanced flavour
 #define PERMISSIVE_HOLD
+// Same as zmk positional hold tap, settles taps when 2 keys are pressed on same keyboard side before tapping term
+#define CHORDAL_HOLD
+// Allow repeat after holding a tap hold button after a tap
+// Equivalent of zmk quick-tap-ms
+#define QUICK_TAP_TERM 175
+// Equivalent of zmk require-prior-idle-ms
+#define FLOW_TAP_TERM 150
+// Equivalent of zmk Hold-trigger-on-release
+#define RETRO_TAPPING
+
 #define USB_VBUS_PIN 19
 #define AUDIO_PWM_DRIVER PWMD2
 #define AUDIO_PWM_CHANNEL RP2040_PWM_CHANNEL_B
