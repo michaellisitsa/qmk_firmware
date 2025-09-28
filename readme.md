@@ -7,6 +7,12 @@ QMK Userspace is not supported for keyboards that aren't in upstream qmk firmwar
 - Follow set up environment instructions per https://docs.qmk.fm/newbs_getting_started
 - Use this repo for the `qmk setup` step per https://docs.qmk.fm/getting_started_github. This will check out the repo to your computer.
 - This will use HTTPS authentication which won't allow further git commits. So change to ssh via https://edwards.flinders.edu.au/git-change-remote-from-https-to-ssh/
+- For keymap.c formatter, use https://github.com/rcorre/qmkfmt
+```sh
+qmkfmt path/to/keymap.c --split-spaces=5
+# vim
+!qmkfmt % --split-spaces=10
+```
 
 # Compiling
 ```bash
