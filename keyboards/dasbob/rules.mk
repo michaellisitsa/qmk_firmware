@@ -23,3 +23,8 @@ WPM_ENABLE = yes
 LTO_ENABLE = yes
 SERIAL_DRIVER = vendor
 AUDIO_DRIVER = pwm_hardware
+# In future, to be used for One-shot shift and caps word key
+# Caps word turned off by hitting tap dance, see https://github.com/qmk/qmk_firmware/issues/19574
+# This should be fine as we only use tap dance for caps word anyway
+TAP_DANCE_ENABLE = yes
+CAPS_WORD_ENABLE = yes

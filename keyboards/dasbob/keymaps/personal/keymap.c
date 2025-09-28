@@ -1,15 +1,24 @@
 #include QMK_KEYBOARD_H
 
-enum dasbob_layers { _QWERTY, _SYMBOL, _NUMBER };
+enum dasbob_layers { _QWERTY, _SYMBOL, _NUMBER, _NAV };
+// Tap Dance keycodes
+// https://docs.qmk.fm/features/tap_dance#example-5
+enum td_keycodes { SHIFT_NAV };
 
-enum {
-    TD_ESC_CAPS,
-};
+// Define a type containing as many tapdance states as you need
+typedef enum { TD_NONE, TD_UNKNOWN, TD_SINGLE_TAP, TD_SINGLE_HOLD, TD_DOUBLE_SINGLE_TAP } td_state_t;
 
-tap_dance_action_t tap_dance_actions[] = {
-    // Example Tap dance only
-    [TD_ESC_CAPS] = ACTION_TAP_DANCE_DOUBLE(KC_ESC, KC_CAPS),
-};
+// Create a global instance of the tapdance state type
+static td_state_t td_state;
+
+// Declare your tapdance functions:
+
+// Function to determine the current tapdance state
+td_state_t cur_dance(tap_dance_state_t *state);
+
+// `finished` and `reset` functions for each tapdance keycode
+void shift_nav_finished(tap_dance_state_t *state, void *user_data);
+void shift_nav_reset(tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      /*
@@ -29,10 +38,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
     [_QWERTY] = LAYOUT_split_3x5_3(
-        KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,              KC_Y,   KC_U,                KC_I,         KC_O,         KC_P,
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,              KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_LBRC),
-        KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,              KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_RBRC,
-                                    XXXXXXX,      MO(_NUMBER),  CW_TOGG,           KC_ENT, LT(_SYMBOL, KC_SPC), XXXXXXX
+        KC_Q,         KC_W,         KC_E,         KC_R,          KC_T,              KC_Y,   KC_U,                KC_I,         KC_O,         KC_P,
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F),  KC_G,              KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_LBRC),
+        KC_Z,         KC_X,         KC_C,         KC_V,          KC_B,              KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_RBRC,
+                                    XXXXXXX,      TD(SHIFT_NAV), CW_TOGG,           KC_ENT, LT(_SYMBOL, KC_SPC), XXXXXXX
     ),
 
     // https://docs.qmk.fm/keycodes_us_ansi_shifted
@@ -50,8 +59,67 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                           _______, _______, _______,           _______,    KC_0, _______
     ),
 
+    [_NAV] = LAYOUT_split_3x5_3(
+        _______, _______, _______, _______, _______,           _______, _______, _______, _______,  _______,
+        _______, _______, _______, _______, _______,           KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT, _______,
+        _______, _______, _______, _______, _______,           _______, _______, _______, _______,  _______,
+                          _______, _______, _______,           _______, _______, _______
+    ),
 
 };
+
+// Determine the tapdance state to return
+td_state_t cur_dance(tap_dance_state_t *state) {
+    if (state->count == 1) {
+        if (state->interrupted || !state->pressed)
+            return TD_SINGLE_TAP;
+        else
+            return TD_SINGLE_HOLD;
+    }
+
+    if (state->count == 2)
+        return TD_DOUBLE_SINGLE_TAP;
+    else
+        return TD_UNKNOWN; // Any number higher than the maximum state value you return above
+}
+
+// Handle the possible states for each tapdance keycode you define:
+
+void shift_nav_finished(tap_dance_state_t *state, void *user_data) {
+    td_state = cur_dance(state);
+    switch (td_state) {
+        case TD_SINGLE_TAP:
+            set_oneshot_mods(MOD_BIT(KC_LSFT));
+            break;
+        case TD_SINGLE_HOLD:
+            layer_on(_NAV);
+            break;
+        case TD_DOUBLE_SINGLE_TAP:
+            caps_word_on();
+            break;
+        default:
+            break;
+    }
+}
+
+void shift_nav_reset(tap_dance_state_t *state, void *user_data) {
+    switch (td_state) {
+        case TD_SINGLE_TAP:
+            clear_oneshot_mods();
+            break;
+        case TD_SINGLE_HOLD:
+            layer_off(_NAV);
+            break;
+        case TD_DOUBLE_SINGLE_TAP:
+            // Do nothing for caps word disable
+            break;
+        default:
+            break;
+    }
+}
+
+// Define `ACTION_TAP_DANCE_FN_ADVANCED()` for each tapdance keycode, passing in `finished` and `reset` functions
+tap_dance_action_t tap_dance_actions[] = {[SHIFT_NAV] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, shift_nav_finished, shift_nav_reset)};
 #ifdef OLED_ENABLE
 
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
@@ -86,7 +154,11 @@ bool oled_task_user(void) {
                 break;
             case _NUMBER:
                 oled_set_cursor(12, 1);
-                oled_write_P(PSTR("Raise\n"), false);
+                oled_write_P(PSTR("Number\n"), false);
+                break;
+            case _NAV:
+                oled_set_cursor(12, 1);
+                oled_write_P(PSTR("Navigation\n"), false);
                 break;
             default:
                 // Or use the write_ln shortcut over adding '\n' to the end of your string
