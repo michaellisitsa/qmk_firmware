@@ -20,6 +20,13 @@ td_state_t cur_dance(tap_dance_state_t *state);
 void shift_nav_finished(tap_dance_state_t *state, void *user_data);
 void shift_nav_reset(tap_dance_state_t *state, void *user_data);
 
+const uint16_t PROGMEM esc_combo[]  = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM test_combo[]  = {KC_N, KC_M, COMBO_END};
+combo_t key_combos[] = {
+    COMBO(esc_combo, KC_ESC),
+    COMBO(test_combo, KC_ESC),
+};
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      /*
       * ┌───┬───┬───┬───┬───┐       ┌───┬───┬───┬───┬───┐
@@ -38,17 +45,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 
     [_QWERTY] = LAYOUT_split_3x5_3(
-        KC_Q,         KC_W,         KC_E,         KC_R,          KC_T,              KC_Y,   KC_U,                KC_I,         KC_O,         KC_P,
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F),  KC_G,              KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_LBRC),
-        KC_Z,         KC_X,         KC_C,         KC_V,          KC_B,              KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_RBRC,
-                                    XXXXXXX,      TD(SHIFT_NAV), CW_TOGG,           KC_ENT, LT(_SYMBOL, KC_SPC), XXXXXXX
+        KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                    KC_Y,   KC_U,                KC_I,         KC_O,         KC_P,
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,                    KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_LBRC),
+        KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,                    KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_RBRC,
+                                    XXXXXXX,      MO(_NUMBER),  TD(SHIFT_NAV),           KC_ENT, LT(_SYMBOL, KC_SPC), XXXXXXX
     ),
 
     // https://docs.qmk.fm/keycodes_us_ansi_shifted
     [_SYMBOL] = LAYOUT_split_3x5_3(
         KC_EXLM, KC_LCBR, KC_RCBR, KC_SCLN, KC_QUES,           KC_GRV,  KC_AMPR, KC_HASH,      KC_AT,   KC_BSLS,
         KC_CIRC, KC_EQL,  KC_UNDS, KC_DLR,  KC_ASTR,           KC_DQUO, KC_BSPC, KC_TAB,       KC_SPC,  KC_PLUS,
-        KC_LPRN, KC_PIPE, KC_RPRN, KC_RPRN, KC_SLSH,           KC_QUOT, KC_DEL,  LSFT(KC_TAB), KC_TILD, XXXXXXX,
+        KC_LPRN, KC_PIPE, KC_MINS, KC_RPRN, KC_SLSH,           KC_QUOT, KC_DEL,  LSFT(KC_TAB), KC_TILD, XXXXXXX,
                           XXXXXXX, KC_PERC, KC_COLN,           _______, _______, XXXXXXX
     ),
 
@@ -105,9 +112,9 @@ void shift_nav_finished(tap_dance_state_t *state, void *user_data) {
 void shift_nav_reset(tap_dance_state_t *state, void *user_data) {
     switch (td_state) {
         case TD_SINGLE_TAP:
-            clear_oneshot_mods();
             break;
         case TD_SINGLE_HOLD:
+            clear_oneshot_mods();
             layer_off(_NAV);
             break;
         case TD_DOUBLE_SINGLE_TAP:

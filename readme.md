@@ -10,8 +10,14 @@ QMK Userspace is not supported for keyboards that aren't in upstream qmk firmwar
 - For keymap.c formatter, use https://github.com/rcorre/qmkfmt
 ```sh
 qmkfmt path/to/keymap.c --split-spaces=5
-# vim
+# vim - on keymap.c file
 !qmkfmt % --split-spaces=10
+```
+- For generating keymap, currently 2nd command fails as dasbob not in existing keyboard list
+```sh
+# vim - on keymap.c file
+!qmk c2json % | uv tool run --from keymap-drawer keymap parse -c 10 -q - >dasbob_keymap.yaml
+!qmk c2json % | uv tool run --from keymap-drawer keymap draw dasbob_keymap.yaml >dasbob_keymap.ortho.svg
 ```
 
 # Compiling
