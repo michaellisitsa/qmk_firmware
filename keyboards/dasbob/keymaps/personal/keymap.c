@@ -20,12 +20,29 @@ td_state_t cur_dance(tap_dance_state_t *state);
 void shift_nav_finished(tap_dance_state_t *state, void *user_data);
 void shift_nav_reset(tap_dance_state_t *state, void *user_data);
 
+// Defaults match https://docs.qmk.fm/tap_hold#is-flow-tap-key
+// excluding space as I use this for symbol layer so expect to use these symbols in fast typing.
+bool is_flow_tap_key(uint16_t keycode) {
+    if ((get_mods() & (MOD_MASK_CG | MOD_BIT_LALT)) != 0) {
+        return false; // Disable Flow Tap on hotkeys.
+    }
+    switch (get_tap_keycode(keycode)) {
+        case KC_A ... KC_Z:
+        case KC_DOT:
+        case KC_COMM:
+        case KC_SCLN:
+        case KC_SLSH:
+            return true;
+    }
+    return false;
+}
 const uint16_t PROGMEM esc_combo[]  = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
 combo_t key_combos[] = {
     COMBO(esc_combo, KC_ESC),
 };
 
 // Ensure chordal hold works with handedness except for the thumb cluster
+// TODO: Figure out why this breaks qmkfmt.
 const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM =
     LAYOUT_split_3x5_3(
         'L', 'L', 'L', 'L', 'L',       'R', 'R', 'R', 'R', 'R',
