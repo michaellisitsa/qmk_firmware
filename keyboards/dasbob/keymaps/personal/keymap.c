@@ -21,11 +21,18 @@ void shift_nav_finished(tap_dance_state_t *state, void *user_data);
 void shift_nav_reset(tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM esc_combo[]  = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
-const uint16_t PROGMEM test_combo[]  = {KC_N, KC_M, COMBO_END};
 combo_t key_combos[] = {
     COMBO(esc_combo, KC_ESC),
-    COMBO(test_combo, KC_ESC),
 };
+
+// Ensure chordal hold works with handedness except for the thumb cluster
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM =
+    LAYOUT(
+        'L', 'L', 'L', 'L', 'L',       'R', 'R', 'R', 'R', 'R',
+        'L', 'L', 'L', 'L', 'L',       'R', 'R', 'R', 'R', 'R',
+        'L', 'L', 'L', 'L', 'L',       'R', 'R', 'R', 'R', 'R',
+                  '*', '*', '*',       '*', '*', '*'
+    );
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      /*
