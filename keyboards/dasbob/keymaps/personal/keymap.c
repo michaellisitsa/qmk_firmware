@@ -20,7 +20,7 @@ td_state_t cur_dance(tap_dance_state_t *state);
 void shift_nav_finished(tap_dance_state_t *state, void *user_data);
 void shift_nav_reset(tap_dance_state_t *state, void *user_data);
 
-const uint16_t PROGMEM esc_combo[]  = {KC_J, KC_K, COMBO_END};
+const uint16_t PROGMEM esc_combo[]  = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
 const uint16_t PROGMEM test_combo[]  = {KC_N, KC_M, COMBO_END};
 combo_t key_combos[] = {
     COMBO(esc_combo, KC_ESC),
