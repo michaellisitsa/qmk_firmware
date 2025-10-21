@@ -77,9 +77,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     // https://docs.qmk.fm/keycodes_us_ansi_shifted
     [_SYMBOL] = LAYOUT_split_3x5_3(
-        KC_EXLM, KC_LCBR, KC_RCBR, KC_SCLN, KC_QUES,           KC_GRV,  KC_AMPR, KC_HASH,      KC_AT,   KC_BSLS,
-        KC_CIRC, KC_EQL,  KC_UNDS, KC_DLR,  KC_ASTR,           KC_DQUO, KC_BSPC, KC_TAB,       KC_SPC,  KC_PLUS,
-        KC_LPRN, KC_PIPE, KC_MINS, KC_RPRN, KC_SLSH,           KC_QUOT, KC_DEL,  LSFT(KC_TAB), KC_TILD, XXXXXXX,
+        KC_EXLM, KC_LCBR, KC_RCBR, KC_SCLN, KC_QUES,           KC_GRV,  KC_AMPR, KC_HASH,       KC_AT,        KC_BSLS,
+        KC_CIRC, KC_EQL,  KC_UNDS, KC_DLR,  KC_ASTR,           KC_DQUO, KC_BSPC, KC_TAB,        KC_SPC,       KC_LBRC,
+        KC_LPRN, KC_PIPE, KC_MINS, KC_RPRN, KC_SLSH,           KC_QUOT, KC_PLUS, LSFT(KC_COMM), LSFT(KC_DOT), KC_RBRC,
                           XXXXXXX, KC_PERC, KC_COLN,           _______, _______, XXXXXXX
     ),
 

@@ -24,6 +24,12 @@ qmkfmt path/to/keymap.c --split-spaces=5
 ```bash
 qmk compile -kb dasbob -km personal
 ```
+# TODO
+Numword
+- See example from:
+https://github.com/qmk/qmk_firmware/tree/906108fb486797ab2f3eb7c3a6f70e099c1199e6/users/replicaJunction
+also interesting approach by using the caps word functionality with custom case statement to determine which keys to continue
+https://github.com/Ga68/qmk_firmware/blob/my_layout/keyboards/sofle/keymaps/Ga68/caps_word.c
 
 
 ## Original README.md
