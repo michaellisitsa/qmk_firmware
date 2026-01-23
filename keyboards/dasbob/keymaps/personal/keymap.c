@@ -86,7 +86,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_QWERTY] = LAYOUT_split_3x5_3(
         KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                    KC_Y,   KC_U,                KC_I,         KC_O,         KC_P,
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,                    KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_COLN),
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,                    KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_SCLN),
         KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,                    KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_BSPC,
                                     XXXXXXX,      MO(_NUMBER),  TD(SHIFT_NAV),           KC_ENT, LT(_SYMBOL, KC_SPC), XXXXXXX
     ),
@@ -114,7 +114,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
 };
-
+// Custom handling to have mod-tap with shifted keycodes.
+// https://docs.qmk.fm/mod_tap#intercepting-mod-taps
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    switch (keycode) {
+        case RGUI_T(KC_SCLN):
+            if (record->tap.count && record->event.pressed) {
+                tap_code16(KC_COLN);
+                return false;
+            }
+            break;
+    }
+    return true;
+}
 // Determine the tapdance state to return
 td_state_t cur_dance(tap_dance_state_t *state) {
     if (state->count == 1) {
