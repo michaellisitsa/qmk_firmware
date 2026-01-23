@@ -36,9 +36,23 @@ bool is_flow_tap_key(uint16_t keycode) {
     }
     return false;
 }
-const uint16_t PROGMEM esc_combo[]  = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
+
+const uint16_t PROGMEM sticky_num_combo[] = {LALT_T(KC_S), LSFT_T(KC_D), COMBO_END};
+const uint16_t PROGMEM hold_num_combo[] = {KC_X, KC_C, COMBO_END};
+const uint16_t PROGMEM magic_shift_combo[] = {LSFT_T(KC_D), LCTL_T(KC_F), COMBO_END};
+const uint16_t PROGMEM hold_nav_combo[] = {KC_C, KC_V, COMBO_END};
+const uint16_t PROGMEM esc_combo[] = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
+const uint16_t PROGMEM tab_combo[] = {LSFT_T(KC_K), RALT_T(KC_L), COMBO_END};
+const uint16_t PROGMEM tilde_combo[] = {LGUI_T(KC_A), LALT_T(KC_S), COMBO_END};
+
 combo_t key_combos[] = {
-    COMBO(esc_combo, KC_ESC),
+    COMBO(sticky_num_combo, OSL(_NUMBER)),  // One-shot number layer
+    COMBO(hold_num_combo, MO(_NUMBER)),     // Hold number layer
+    COMBO(magic_shift_combo, OSM(MOD_LSFT)), // One-shot shift (adjust if you want caps_word)
+    COMBO(hold_nav_combo, MO(_NAV)),        // Hold nav layer
+    COMBO(esc_combo, KC_ESC),               // Escape
+    COMBO(tab_combo, KC_TAB),               // Tab
+    COMBO(tilde_combo, KC_TILDE),           // Tilde
 };
 
 // Ensure chordal hold works with handedness except for the thumb cluster
@@ -70,16 +84,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [_QWERTY] = LAYOUT_split_3x5_3(
         KC_Q,         KC_W,         KC_E,         KC_R,         KC_T,                    KC_Y,   KC_U,                KC_I,         KC_O,         KC_P,
-        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,                    KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_LBRC),
-        KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,                    KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_RBRC,
+        LGUI_T(KC_A), LALT_T(KC_S), LSFT_T(KC_D), LCTL_T(KC_F), KC_G,                    KC_H,   LCTL_T(KC_J),        LSFT_T(KC_K), RALT_T(KC_L), RGUI_T(KC_COLN),
+        KC_Z,         KC_X,         KC_C,         KC_V,         KC_B,                    KC_N,   KC_M,                KC_COMM,      KC_DOT,       KC_BSPC,
                                     XXXXXXX,      MO(_NUMBER),  TD(SHIFT_NAV),           KC_ENT, LT(_SYMBOL, KC_SPC), XXXXXXX
     ),
 
     // https://docs.qmk.fm/keycodes_us_ansi_shifted
     [_SYMBOL] = LAYOUT_split_3x5_3(
         KC_EXLM, KC_LCBR, KC_RCBR, KC_SCLN, KC_QUES,           KC_GRV,  KC_AMPR, KC_HASH,       KC_AT,        KC_BSLS,
-        KC_CIRC, KC_EQL,  KC_UNDS, KC_DLR,  KC_ASTR,           KC_DQUO, KC_BSPC, KC_TAB,        KC_SPC,       KC_LBRC,
-        KC_LPRN, KC_PIPE, KC_MINS, KC_RPRN, KC_SLSH,           KC_QUOT, KC_PLUS, LSFT(KC_COMM), LSFT(KC_DOT), KC_RBRC,
+        KC_CIRC, KC_EQL,  KC_UNDS, KC_DLR,  KC_ASTR,           KC_DQUO, KC_LBRC, KC_RBRC,       KC_SPC,       KC_COLN,
+        KC_LPRN, KC_PIPE, KC_MINS, KC_RPRN, KC_SLSH,           KC_QUOT, KC_PLUS, LSFT(KC_COMM), LSFT(KC_DOT), KC_PERC,
                           XXXXXXX, KC_PERC, KC_COLN,           _______, _______, XXXXXXX
     ),
 
