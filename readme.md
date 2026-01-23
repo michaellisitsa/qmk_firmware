@@ -24,6 +24,15 @@ qmkfmt path/to/keymap.c --split-spaces=5
 ```bash
 qmk compile -kb dasbob -km personal
 ```
+
+# Flashing
+- Disconnect the 2 halves of the TRRS cable - this carries 5V power.
+- Plug in one of the halves into computer with keyboard.
+- Hold reset button for 1 second
+- Once keyboard apperas, drag over the compile file.
+- Open Finder to path/to/repo/.build
+- Drag over `dasbob_personal.uf2` file on each side of keyboard
+
 # TODO
 Numword
 - See example from:
