@@ -39,7 +39,8 @@ bool is_flow_tap_key(uint16_t keycode) {
 
 const uint16_t PROGMEM sticky_num_combo[] = {LALT_T(KC_S), LSFT_T(KC_D), COMBO_END};
 const uint16_t PROGMEM hold_num_combo[] = {KC_X, KC_C, COMBO_END};
-const uint16_t PROGMEM magic_shift_combo[] = {LSFT_T(KC_D), LCTL_T(KC_F), COMBO_END};
+const uint16_t PROGMEM caps_word_combo[] = {KC_E, KC_R, COMBO_END};
+const uint16_t PROGMEM sticky_shift_combo[] = {LSFT_T(KC_D), LCTL_T(KC_F), COMBO_END};
 const uint16_t PROGMEM hold_nav_combo[] = {KC_C, KC_V, COMBO_END};
 const uint16_t PROGMEM esc_combo[] = {LCTL_T(KC_J), LSFT_T(KC_K), COMBO_END};
 const uint16_t PROGMEM tab_combo[] = {LSFT_T(KC_K), RALT_T(KC_L), COMBO_END};
@@ -48,7 +49,8 @@ const uint16_t PROGMEM tilde_combo[] = {LGUI_T(KC_A), LALT_T(KC_S), COMBO_END};
 combo_t key_combos[] = {
     COMBO(sticky_num_combo, OSL(_NUMBER)),  // One-shot number layer
     COMBO(hold_num_combo, MO(_NUMBER)),     // Hold number layer
-    COMBO(magic_shift_combo, OSM(MOD_LSFT)), // One-shot shift (adjust if you want caps_word)
+    COMBO(caps_word_combo, CW_TOGG),        // Caps word
+    COMBO(sticky_shift_combo, OSM(MOD_LSFT)), // One-shot shift
     COMBO(hold_nav_combo, MO(_NAV)),        // Hold nav layer
     COMBO(esc_combo, KC_ESC),               // Escape
     COMBO(tab_combo, KC_TAB),               // Tab
